@@ -1,9 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
 
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Messages from './pages/Messages';
@@ -17,37 +21,117 @@ import './index.css';
 
 export default function App() {
   return (
-    <AppProvider>
-      <Router>
-        <div className="app-layout">
-          <Navbar />
-          <main className="app-container">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/messages" element={<Messages />} />
-              <Route path="/notifications" element={<Notifications />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/profile" element={<MyProfile />} />
-              <Route path="/edit-profile" element={<EditProfile />} />
-              <Route path="/user/:id" element={<UserProfile />} />
-            </Routes>
-          </main>
-        </div>
-        <Toaster 
-          position="bottom-center"
-          toastOptions={{
-            style: {
-              background: 'rgba(255, 255, 255, 0.85)',
-              backdropFilter: 'blur(12px)',
-              color: '#1F3636',
-              border: '1px solid rgba(255, 255, 255, 0.9)',
-              fontWeight: 500,
-              boxShadow: '0 10px 30px rgba(31, 54, 54, 0.12)'
-            },
-          }}
-        />
-      </Router>
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <Router>
+          <div className="app-layout">
+            <Navbar />
+            <main className="app-container">
+              <Routes>
+                {/* Guest-only routes: redirect authenticated users away from /login and /signup */}
+                <Route
+                  path="/login"
+                  element={
+                    <ProtectedRoute guestOnly>
+                      <Login />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/signup"
+                  element={
+                    <ProtectedRoute guestOnly>
+                      <SignUp />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Protected routes: redirect to /login if unauthenticated */}
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <Home />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/search"
+                  element={
+                    <ProtectedRoute>
+                      <Search />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/messages"
+                  element={
+                    <ProtectedRoute>
+                      <Messages />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/notifications"
+                  element={
+                    <ProtectedRoute>
+                      <Notifications />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    <ProtectedRoute>
+                      <Settings />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <MyProfile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/edit-profile"
+                  element={
+                    <ProtectedRoute>
+                      <EditProfile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/user/:id"
+                  element={
+                    <ProtectedRoute>
+                      <UserProfile />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Catch-all fallback */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </main>
+          </div>
+          <Toaster 
+            position="bottom-center"
+            toastOptions={{
+              style: {
+                background: 'rgba(255, 255, 255, 0.85)',
+                backdropFilter: 'blur(12px)',
+                color: '#1F3636',
+                border: '1px solid rgba(255, 255, 255, 0.9)',
+                fontWeight: 500,
+                boxShadow: '0 10px 30px rgba(31, 54, 54, 0.12)'
+              },
+            }}
+          />
+        </Router>
+      </AppProvider>
+    </AuthProvider>
   );
 }

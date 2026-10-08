@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
+import { useAuth } from './AuthContext';
 
 const AppContext = createContext();
 
@@ -189,13 +190,43 @@ const INITIAL_CONVERSATIONS = [
 ];
 
 export const AppProvider = ({ children }) => {
+  const { user, logout: authLogout } = useAuth();
+
   // Authentication & Current User State
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [currentUser, setCurrentUser] = useState(INITIAL_CURRENT_USER);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!user);
+  const [currentUser, setCurrentUser] = useState(() => {
+    if (user) {
+      return {
+        ...INITIAL_CURRENT_USER,
+        ...user,
+        id: user.id || user._id,
+        avatar: user.avatar || INITIAL_CURRENT_USER.avatar,
+      };
+    }
+    return INITIAL_CURRENT_USER;
+  });
   const [users, setUsers] = useState(INITIAL_USERS);
   const [posts, setPosts] = useState(INITIAL_POSTS);
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
   const [conversations, setConversations] = useState(INITIAL_CONVERSATIONS);
+
+  useEffect(() => {
+    if (user) {
+      setCurrentUser(prev => ({
+        ...prev,
+        ...user,
+        id: user.id || user._id,
+        avatar: user.avatar || prev.avatar || INITIAL_CURRENT_USER.avatar,
+        followersCount: user.followersCount ?? (user.followers ? user.followers.length : prev.followersCount),
+        followingCount: user.followingCount ?? (user.following ? user.following.length : prev.followingCount),
+        followingUsers: user.followingUsers || (user.following ? user.following.map(f => typeof f === 'object' ? (f.id || f._id) : f) : prev.followingUsers),
+        followersUsers: user.followersUsers || (user.followers ? user.followers.map(f => typeof f === 'object' ? (f.id || f._id) : f) : prev.followersUsers),
+      }));
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [user]);
 
   // Socket.IO Integration
   const socketRef = useRef(null);
@@ -228,10 +259,12 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     // Attempt connection to Socket.IO server (gracefully handles offline backend)
     try {
-      const socket = io('http://localhost:5000', {
+      const token = localStorage.getItem('token');
+      const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
         autoConnect: false,
         reconnectionAttempts: 2,
-        timeout: 3000
+        timeout: 3000,
+        auth: token ? { token } : undefined
       });
       socketRef.current = socket;
 
@@ -519,6 +552,9 @@ export const AppProvider = ({ children }) => {
   };
 
   const logout = () => {
+    if (authLogout) {
+      authLogout();
+    }
     setIsLoggedIn(false);
     toast.success('Logged out successfully');
   };
