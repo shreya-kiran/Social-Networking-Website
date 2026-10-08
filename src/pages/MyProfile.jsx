@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Settings, Edit3, Users } from 'lucide-react';
+import { Settings, Edit3 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import PostCard from '../components/PostCard';
 import FollowersModal from '../components/FollowersModal';

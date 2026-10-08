@@ -19,7 +19,6 @@ export default function Settings() {
     changePassword, 
     deleteAccount, 
     logout, 
-    login, 
     isLoggedIn 
   } = useAppContext();
 
@@ -67,7 +66,7 @@ export default function Settings() {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/login');
   };
 
   if (!isLoggedIn) {
@@ -78,8 +77,8 @@ export default function Settings() {
         <p className="text-muted" style={{ marginBottom: '24px' }}>
           Log in again to manage your account settings and social feeds.
         </p>
-        <button className="glass-button primary" onClick={login}>
-          Log Back In as Demo User
+        <button className="glass-button primary" onClick={() => navigate('/login')}>
+          Sign In
         </button>
       </div>
     );
