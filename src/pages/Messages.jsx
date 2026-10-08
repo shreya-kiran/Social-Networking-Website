@@ -7,11 +7,11 @@ import { useAppContext } from '../context/AppContext';
 export default function Messages() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { 
-    currentUser, 
-    conversations, 
-    getUser, 
-    sendMessage, 
+  const {
+    currentUser,
+    conversations,
+    getUser,
+    sendMessage,
     markConversationAsRead,
     getOrCreateConversation
   } = useAppContext();
@@ -118,8 +118,8 @@ export default function Messages() {
                       <div className="conv-bottom-line">
                         <p className="conv-preview">
                           {lastMsg ? (
-                            lastMsg.senderId === currentUser.id 
-                              ? `You: ${lastMsg.text}` 
+                            lastMsg.senderId === currentUser.id
+                              ? `You: ${lastMsg.text}`
                               : lastMsg.text
                           ) : (
                             'No messages yet'
@@ -149,15 +149,15 @@ export default function Messages() {
             <>
               {/* Chat Header */}
               <div className="chat-header">
-                <button 
-                  className="icon-btn mobile-back-btn" 
+                <button
+                  className="icon-btn mobile-back-btn"
                   onClick={() => setMobileView('list')}
                   aria-label="Back to conversations"
                 >
                   <ArrowLeft size={20} />
                 </button>
 
-                <div 
+                <div
                   className="chat-header-user"
                   onClick={() => navigate(`/user/${activeUser.id}`)}
                 >
@@ -180,15 +180,15 @@ export default function Messages() {
                   activeConversation.messages.map(msg => {
                     const isMine = msg.senderId === currentUser.id;
                     return (
-                      <div 
-                        key={msg.id} 
+                      <div
+                        key={msg.id}
                         className={`message-row ${isMine ? 'mine' : 'theirs'}`}
                       >
                         {!isMine && (
-                          <img 
-                            src={activeUser.avatar} 
-                            alt={activeUser.name} 
-                            className="avatar msg-avatar" 
+                          <img
+                            src={activeUser.avatar}
+                            alt={activeUser.name}
+                            className="avatar msg-avatar"
                           />
                         )}
                         <div className={`message-bubble ${isMine ? 'bubble-mine' : 'bubble-theirs'}`}>
@@ -210,17 +210,17 @@ export default function Messages() {
 
               {/* Chat Input Bar */}
               <form className="chat-input-bar" onSubmit={handleSend}>
-                <input 
-                  type="text" 
-                  className="glass-input chat-text-input" 
+                <input
+                  type="text"
+                  className="glass-input chat-text-input"
                   placeholder={`Message ${activeUser.name}...`}
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyDown}
                   autoFocus
                 />
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="glass-button primary send-btn"
                   disabled={!inputText.trim()}
                   title="Send message"

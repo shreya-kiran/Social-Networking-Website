@@ -1,7 +1,11 @@
+// 1. IMPORT DEPENDENCIES
+// Import Mongoose models required for creating comments, verifying posts, and generating notifications
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
 const Notification = require('../models/Notification');
 
+// 2. CREATE COMMENT CONTROLLER
+// Handles adding a new comment to a specific post (POST /api/posts/:postId/comments)
 exports.createComment = async (req, res) => {
   try {
     const { text } = req.body;
@@ -35,6 +39,8 @@ exports.createComment = async (req, res) => {
   }
 };
 
+// 3. GET POST COMMENTS CONTROLLER
+// Retrieves all comments for a specific post (GET /api/posts/:postId/comments)
 exports.getPostComments = async (req, res) => {
   try {
     const comments = await Comment.find({ post: req.params.postId })

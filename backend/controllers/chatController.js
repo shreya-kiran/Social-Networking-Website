@@ -1,5 +1,7 @@
+// Import the Mongoose Message model to perform queries on the 'messages' collection
 const Message = require('../models/Message');
-
+// CONTROLLER: Get Chat History
+// Fetches conversation history between the logged-in user and another specified user (GET /api/messages/:userId)
 exports.getChatHistory = async (req, res) => {
   try {
     const otherUserId = req.params.userId;

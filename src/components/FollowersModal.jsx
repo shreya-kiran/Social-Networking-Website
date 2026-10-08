@@ -1,8 +1,10 @@
+// 1. IMPORT DEPENDENCIES & HOOKS
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, UserCheck, UserPlus, Users } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
-
+// 2. COMPONENT DEFINITION & PROPS
+// Renders a modal displaying lists of Followers and Following for a target user profile
 export default function FollowersModal({ isOpen, onClose, initialTab = 'followers', profileUserId }) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const navigate = useNavigate();

@@ -1,7 +1,11 @@
+// 1. IMPORT DEPENDENCIES
+// Import Mongoose models required for user operations, notifications, and cascading updates on posts
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 const Post = require('../models/Post');
 
+// 2. GET USER PROFILE CONTROLLER
+// Fetches a user's public profile by their username (GET /api/users/profile/:username)
 exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username })
@@ -14,7 +18,8 @@ exports.getUserProfile = async (req, res) => {
     res.status(500).json({ error: 'Server error fetching user' });
   }
 };
-
+// 3. UPDATE PROFILE CONTROLLER
+// Updates the logged-in user's profile details and avatar (PUT/PATCH /api/users/profile)
 exports.updateProfile = async (req, res) => {
   try {
     const { name, bio } = req.body;
@@ -32,7 +37,8 @@ exports.updateProfile = async (req, res) => {
     res.status(500).json({ error: 'Server error updating profile' });
   }
 };
-
+// 4. TOGGLE FOLLOW CONTROLLER
+// Handles following/unfollowing a target user and creating follow notifications (POST /api/users/:id/follow)
 exports.toggleFollow = async (req, res) => {
   try {
     const targetUserId = req.params.id;

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
+const jwt = require('jsonwebtoken');
 
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -11,7 +12,6 @@ const postRoutes = require('./routes/postRoutes');
 const commentRoutes = require('./routes/commentRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const Message = require('./models/Message');
-const jwt = require('jsonwebtoken');
 
 const app = express();
 const server = http.createServer(app);
@@ -20,8 +20,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: '*',
-    methods: ['GET', 'POST']
-  }
+    methods: ['GET', 'POST'],
+  },
 });
 
 app.use(cors());
@@ -61,7 +61,7 @@ io.on('connection', (socket) => {
       const message = new Message({
         sender: socket.userId,
         recipient: recipientId,
-        text
+        text,
       });
       await message.save();
 
@@ -85,7 +85,6 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 5000;
 
-<<<<<<< HEAD
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
@@ -97,15 +96,3 @@ mongoose
   .catch((err) => {
     console.error('MongoDB connection error:', err);
   });
-=======
-mongoose.connect(process.env.MONGO_URI)
-.then(() => {
-  console.log('Connected to MongoDB');
-  server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-})
-.catch((error) => {
-  console.error('MongoDB connection error:', error);
-});
->>>>>>> e883d64c5ae1301afbf20416eb17f417981ae5df

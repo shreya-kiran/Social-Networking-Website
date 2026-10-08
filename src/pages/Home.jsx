@@ -21,7 +21,7 @@ function CreatePost() {
     <div className="glass-panel create-post-box">
       <div className="create-post-top">
         <img src={currentUser.avatar} alt="You" className="avatar" />
-        <textarea 
+        <textarea
           className="glass-input"
           placeholder="What's on your mind?"
           rows={3}
@@ -29,13 +29,13 @@ function CreatePost() {
           onChange={(e) => setText(e.target.value)}
         />
       </div>
-      
+
       {showImageInput && (
         <div className="create-post-top" style={{ marginBottom: '16px' }}>
           <div style={{ width: '48px' }}></div>
-          <input 
-            type="text" 
-            className="glass-input" 
+          <input
+            type="text"
+            className="glass-input"
             placeholder="Paste image URL here..."
             value={image}
             onChange={(e) => setImage(e.target.value)}
@@ -45,16 +45,16 @@ function CreatePost() {
 
       <div className="create-post-actions">
         <div className="action-buttons">
-          <button 
-            className="glass-button icon-btn" 
+          <button
+            className="glass-button icon-btn"
             title="Add Image"
             onClick={() => setShowImageInput(!showImageInput)}
           >
             <ImageIcon size={20} />
           </button>
         </div>
-        <button 
-          className="glass-button primary" 
+        <button
+          className="glass-button primary"
           onClick={handleSubmit}
           disabled={!text.trim() && !image.trim()}
         >

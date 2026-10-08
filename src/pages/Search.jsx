@@ -20,12 +20,12 @@ export default function Search() {
 
   // Filter users by name or username (exclude current user from search results or label clearly)
   const query = debouncedTerm.toLowerCase().replace(/^@/, '');
-  
+
   const filteredUsers = query
-    ? users.filter(u => 
-        u.name.toLowerCase().includes(query) || 
-        u.username.toLowerCase().includes(query)
-      )
+    ? users.filter(u =>
+      u.name.toLowerCase().includes(query) ||
+      u.username.toLowerCase().includes(query)
+    )
     : users; // When empty, display suggested community members!
 
   const handleUserClick = (userId) => {
@@ -49,7 +49,7 @@ export default function Search() {
       <div className="glass-panel search-bar-box">
         <div className="search-input-wrapper">
           <SearchIcon size={20} className="search-icon" />
-          <input 
+          <input
             type="text"
             className="glass-input search-input"
             placeholder="Search by name or @username..."
@@ -58,8 +58,8 @@ export default function Search() {
             autoFocus
           />
           {searchTerm && (
-            <button 
-              className="clear-search-btn" 
+            <button
+              className="clear-search-btn"
               onClick={() => setSearchTerm('')}
               title="Clear search"
             >
@@ -92,7 +92,7 @@ export default function Search() {
 
             return (
               <div key={user.id} className="glass-panel user-result-card">
-                <div 
+                <div
                   className="user-result-left"
                   onClick={() => handleUserClick(user.id)}
                 >
@@ -110,7 +110,7 @@ export default function Search() {
 
                 <div className="user-result-actions">
                   {!isMe ? (
-                    <button 
+                    <button
                       className={`glass-button ${isFollowing ? 'following' : 'primary'}`}
                       onClick={(e) => {
                         e.stopPropagation();

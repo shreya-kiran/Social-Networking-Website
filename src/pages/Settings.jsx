@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  KeyRound, 
-  Trash2, 
-  LogOut, 
-  AlertTriangle, 
-  X, 
-  ShieldCheck, 
-  Lock 
+import {
+  KeyRound,
+  Trash2,
+  LogOut,
+  AlertTriangle,
+  X,
+  ShieldCheck,
+  Lock
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAppContext } from '../context/AppContext';
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { 
-    currentUser, 
-    changePassword, 
-    deleteAccount, 
-    logout, 
-    isLoggedIn 
+  const {
+    currentUser,
+    changePassword,
+    deleteAccount,
+    logout,
+    isLoggedIn
   } = useAppContext();
 
   // Password Form State
@@ -113,7 +113,7 @@ export default function Settings() {
               <label>Current Password</label>
               <div className="password-input-wrap">
                 <Lock size={18} className="input-inner-icon" />
-                <input 
+                <input
                   type="password"
                   className="glass-input with-prefix-icon"
                   placeholder="Enter current password"
@@ -127,7 +127,7 @@ export default function Settings() {
               <label>New Password</label>
               <div className="password-input-wrap">
                 <Lock size={18} className="input-inner-icon" />
-                <input 
+                <input
                   type="password"
                   className="glass-input with-prefix-icon"
                   placeholder="Minimum 6 characters"
@@ -141,7 +141,7 @@ export default function Settings() {
               <label>Confirm New Password</label>
               <div className="password-input-wrap">
                 <Lock size={18} className="input-inner-icon" />
-                <input 
+                <input
                   type="password"
                   className="glass-input with-prefix-icon"
                   placeholder="Repeat new password"
@@ -201,7 +201,7 @@ export default function Settings() {
             <p style={{ fontSize: '0.95rem', color: '#684545', lineHeight: 1.5 }}>
               Once you delete your account, there is no going back. All published posts, followers connections, and messages will be permanently wiped.
             </p>
-            <button 
+            <button
               className="glass-button danger-solid-btn"
               onClick={() => {
                 setDeleteConfirmationText('');
@@ -223,8 +223,8 @@ export default function Settings() {
                 <AlertTriangle size={24} style={{ color: '#ff4d4f' }} />
                 <h3 style={{ color: '#ff4d4f' }}>Delete Account Permanently</h3>
               </div>
-              <button 
-                className="icon-btn close-btn" 
+              <button
+                className="icon-btn close-btn"
                 onClick={() => setIsDeleteModalOpen(false)}
                 aria-label="Close"
               >
@@ -237,7 +237,7 @@ export default function Settings() {
                 This action is irreversible. To proceed, please type <strong style={{ color: '#ff4d4f', letterSpacing: '1px' }}>DELETE</strong> in the box below:
               </p>
 
-              <input 
+              <input
                 type="text"
                 className="glass-input danger-input"
                 placeholder="Type DELETE to confirm"
@@ -248,13 +248,13 @@ export default function Settings() {
             </div>
 
             <div className="modal-actions-row">
-              <button 
-                className="glass-button" 
+              <button
+                className="glass-button"
                 onClick={() => setIsDeleteModalOpen(false)}
               >
                 Cancel
               </button>
-              <button 
+              <button
                 className="glass-button danger-solid-btn"
                 onClick={handleConfirmDelete}
                 disabled={deleteConfirmationText.trim().toUpperCase() !== 'DELETE'}

@@ -6,11 +6,11 @@ import { useAppContext } from '../context/AppContext';
 
 export default function Notifications() {
   const navigate = useNavigate();
-  const { 
-    notifications, 
-    getUser, 
-    markNotificationAsRead, 
-    markAllNotificationsAsRead 
+  const {
+    notifications,
+    getUser,
+    markNotificationAsRead,
+    markAllNotificationsAsRead
   } = useAppContext();
 
   // Sort newest first
@@ -57,7 +57,7 @@ export default function Notifications() {
         </div>
 
         {unreadCount > 0 && (
-          <button 
+          <button
             className="glass-button mark-all-read-btn"
             onClick={markAllNotificationsAsRead}
           >
@@ -76,7 +76,7 @@ export default function Notifications() {
             };
 
             return (
-              <div 
+              <div
                 key={notif.id}
                 className={`glass-panel notification-card ${!notif.read ? 'unread-card' : ''}`}
                 onClick={() => handleNotificationClick(notif)}

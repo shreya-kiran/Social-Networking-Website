@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
-import { useAuth } from './AuthContext';
 
 const AppContext = createContext();
 
@@ -9,9 +8,9 @@ export const useAppContext = () => useContext(AppContext);
 
 const INITIAL_CURRENT_USER = {
   id: 'u1',
-  name: 'Alex Developer',
-  username: 'alexdev',
-  bio: 'Building beautiful things with code. 🚀 Glassmorphic UI advocate.',
+  name: 'ABC',
+  username: 'abc',
+  bio: ' ',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop',
   followersCount: 142,
   followingCount: 96,
@@ -22,9 +21,9 @@ const INITIAL_CURRENT_USER = {
 const INITIAL_USERS = [
   {
     id: 'u2',
-    name: 'Sarah Designer',
-    username: 'sarahdesigns',
-    bio: 'UI/UX enthusiast. Minimalist aesthetic & fluid motion. ✨',
+    name: 'Ajay',
+    username: 'ajay',
+    bio: 'CSE student',
     avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop',
     followersCount: 543,
     followingCount: 112,
@@ -33,9 +32,9 @@ const INITIAL_USERS = [
   },
   {
     id: 'u3',
-    name: 'Elena UI',
-    username: 'elenaui',
-    bio: 'Frontend Engineer | Open Source contributor & CSS wizard 🪄',
+    name: 'Rahul',
+    username: 'rahul',
+    bio: 'Frontend Engineer in Microsoft',
     avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=300&auto=format&fit=crop',
     followersCount: 892,
     followingCount: 345,
@@ -44,9 +43,9 @@ const INITIAL_USERS = [
   },
   {
     id: 'u4',
-    name: 'Aria Stone',
-    username: 'ariastone',
-    bio: 'Product Designer @ Aurora | Coffee, typography & pastel gradients 🎨',
+    name: 'Sneha',
+    username: 'sneha',
+    bio: 'Product Designer',
     avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=300&auto=format&fit=crop',
     followersCount: 418,
     followingCount: 220,
@@ -55,9 +54,9 @@ const INITIAL_USERS = [
   },
   {
     id: 'u5',
-    name: 'Liam Tech',
-    username: 'liamtech',
-    bio: 'Fullstack Explorer | Rust & React | Building micro-tools 🛠️',
+    name: 'Eshan',
+    username: 'eshan',
+    bio: 'Fullstack Explorer',
     avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=300&auto=format&fit=crop',
     followersCount: 630,
     followingCount: 180,
@@ -190,43 +189,13 @@ const INITIAL_CONVERSATIONS = [
 ];
 
 export const AppProvider = ({ children }) => {
-  const { user, logout: authLogout } = useAuth();
-
   // Authentication & Current User State
-  const [isLoggedIn, setIsLoggedIn] = useState(!!user);
-  const [currentUser, setCurrentUser] = useState(() => {
-    if (user) {
-      return {
-        ...INITIAL_CURRENT_USER,
-        ...user,
-        id: user.id || user._id,
-        avatar: user.avatar || INITIAL_CURRENT_USER.avatar,
-      };
-    }
-    return INITIAL_CURRENT_USER;
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [currentUser, setCurrentUser] = useState(INITIAL_CURRENT_USER);
   const [users, setUsers] = useState(INITIAL_USERS);
   const [posts, setPosts] = useState(INITIAL_POSTS);
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
   const [conversations, setConversations] = useState(INITIAL_CONVERSATIONS);
-
-  useEffect(() => {
-    if (user) {
-      setCurrentUser(prev => ({
-        ...prev,
-        ...user,
-        id: user.id || user._id,
-        avatar: user.avatar || prev.avatar || INITIAL_CURRENT_USER.avatar,
-        followersCount: user.followersCount ?? (user.followers ? user.followers.length : prev.followersCount),
-        followingCount: user.followingCount ?? (user.following ? user.following.length : prev.followingCount),
-        followingUsers: user.followingUsers || (user.following ? user.following.map(f => typeof f === 'object' ? (f.id || f._id) : f) : prev.followingUsers),
-        followersUsers: user.followersUsers || (user.followers ? user.followers.map(f => typeof f === 'object' ? (f.id || f._id) : f) : prev.followersUsers),
-      }));
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [user]);
 
   // Socket.IO Integration
   const socketRef = useRef(null);
@@ -259,16 +228,10 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     // Attempt connection to Socket.IO server (gracefully handles offline backend)
     try {
-<<<<<<< HEAD
       const socket = io('http://localhost:5001', {
-=======
-      const token = localStorage.getItem('token');
-      const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
->>>>>>> e883d64c5ae1301afbf20416eb17f417981ae5df
         autoConnect: false,
         reconnectionAttempts: 2,
-        timeout: 3000,
-        auth: token ? { token } : undefined
+        timeout: 3000
       });
       socketRef.current = socket;
 
@@ -556,9 +519,6 @@ export const AppProvider = ({ children }) => {
   };
 
   const logout = () => {
-    if (authLogout) {
-      authLogout();
-    }
     setIsLoggedIn(false);
     toast.success('Logged out successfully');
   };

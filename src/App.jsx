@@ -3,16 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
-import { AuthProvider } from './context/AuthContext';
 
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-<<<<<<< HEAD
-
-=======
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
->>>>>>> e883d64c5ae1301afbf20416eb17f417981ae5df
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -31,9 +24,8 @@ export default function App() {
     <AuthProvider>
       <AppProvider>
         <Router>
-<<<<<<< HEAD
           <Routes>
-            {/* Guest-only routes — redirect logged-in users to "/" */}
+            {/* Guest-only routes: redirect logged-in users to "/" */}
             <Route
               path="/login"
               element={
@@ -51,7 +43,7 @@ export default function App() {
               }
             />
 
-            {/* Protected routes — require authentication */}
+            {/* Protected routes: require authentication */}
             <Route
               path="/*"
               element={
@@ -68,6 +60,7 @@ export default function App() {
                         <Route path="/profile" element={<MyProfile />} />
                         <Route path="/edit-profile" element={<EditProfile />} />
                         <Route path="/user/:id" element={<UserProfile />} />
+                        <Route path="*" element={<Navigate to="/" replace />} />
                       </Routes>
                     </main>
                   </div>
@@ -77,102 +70,6 @@ export default function App() {
           </Routes>
 
           <Toaster
-=======
-          <div className="app-layout">
-            <Navbar />
-            <main className="app-container">
-              <Routes>
-                {/* Guest-only routes: redirect authenticated users away from /login and /signup */}
-                <Route
-                  path="/login"
-                  element={
-                    <ProtectedRoute guestOnly>
-                      <Login />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/signup"
-                  element={
-                    <ProtectedRoute guestOnly>
-                      <SignUp />
-                    </ProtectedRoute>
-                  }
-                />
-
-                {/* Protected routes: redirect to /login if unauthenticated */}
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <Home />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/search"
-                  element={
-                    <ProtectedRoute>
-                      <Search />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/messages"
-                  element={
-                    <ProtectedRoute>
-                      <Messages />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/notifications"
-                  element={
-                    <ProtectedRoute>
-                      <Notifications />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/settings"
-                  element={
-                    <ProtectedRoute>
-                      <Settings />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute>
-                      <MyProfile />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/edit-profile"
-                  element={
-                    <ProtectedRoute>
-                      <EditProfile />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/user/:id"
-                  element={
-                    <ProtectedRoute>
-                      <UserProfile />
-                    </ProtectedRoute>
-                  }
-                />
-
-                {/* Catch-all fallback */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </main>
-          </div>
-          <Toaster 
->>>>>>> e883d64c5ae1301afbf20416eb17f417981ae5df
             position="bottom-center"
             toastOptions={{
               style: {
@@ -181,7 +78,7 @@ export default function App() {
                 color: '#1F3636',
                 border: '1px solid rgba(255, 255, 255, 0.9)',
                 fontWeight: 500,
-                boxShadow: '0 10px 30px rgba(31, 54, 54, 0.12)'
+                boxShadow: '0 10px 30px rgba(31, 54, 54, 0.12)',
               },
             }}
           />
