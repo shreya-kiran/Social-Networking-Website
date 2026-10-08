@@ -228,7 +228,7 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     // Attempt connection to Socket.IO server (gracefully handles offline backend)
     try {
-      const socket = io('http://localhost:5000', {
+      const socket = io('http://localhost:5001', {
         autoConnect: false,
         reconnectionAttempts: 2,
         timeout: 3000

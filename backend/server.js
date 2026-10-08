@@ -38,9 +38,9 @@ app.use('/messages', chatRoutes);
 const connectedUsers = new Map(); // userId -> socketId
 
 io.use((socket, next) => {
-  const token = socket.handshake.auth.token;
+  const token = socket.handshake.auth?.token;
   if (!token) return next(new Error('Authentication error'));
-  
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     socket.userId = decoded.id;
@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
   socket.on('sendMessage', async (data) => {
     try {
       const { recipientId, text } = data;
-      
+
       const message = new Message({
         sender: socket.userId,
         recipient: recipientId,
@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
       if (recipientSocketId) {
         io.to(recipientSocketId).emit('newMessage', message);
       }
-      
+
       // Echo back to sender for confirmation
       socket.emit('messageSent', message);
     } catch (error) {
@@ -85,16 +85,14 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('Connected to MongoDB');
-  server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
   });
-})
-.catch((error) => {
-  console.error('MongoDB connection error:', error);
-});

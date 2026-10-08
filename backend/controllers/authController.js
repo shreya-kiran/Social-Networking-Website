@@ -1,14 +1,17 @@
+// Imports the Mongoose User model to interact with the MongoDB 'users' collection
 const User = require('../models/User');
+// Imports the JSON Web Token library used to sign and verify JWT authentication tokens
 const jwt = require('jsonwebtoken');
 
+// 2. HELPER FUNCTION: JWT GENERATOR
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
 };
-
+// 3. REGISTER CONTROLLER
 exports.register = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
-    
+
     // Check if user exists
     let userExists = await User.findOne({ $or: [{ email }, { username }] });
     if (userExists) {
@@ -24,11 +27,12 @@ exports.register = async (req, res) => {
     res.status(500).json({ error: 'Server error during registration' });
   }
 };
-
+// 4. LOGIN CONTROLLER
+// Handles user authentication and login (POST /api/auth/login)
 exports.login = async (req, res) => {
   try {
     const { identifier, password } = req.body; // identifier can be email or username
-    
+
     const user = await User.findOne({ $or: [{ email: identifier }, { username: identifier }] });
     if (!user) {
       return res.status(400).json({ error: 'Invalid credentials' });
@@ -46,6 +50,8 @@ exports.login = async (req, res) => {
   }
 };
 
+// 5. GET CURRENT USER PROFILE CONTROLLER
+// Retrieves current authenticated user's details (GET /api/auth/me)
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
@@ -58,11 +64,14 @@ exports.getMe = async (req, res) => {
   }
 };
 
+
+// 6. CHANGE PASSWORD CONTROLLER
+// Allows logged-in users to update their password (PUT/PATCH /api/auth/change-password)
 exports.changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
     const user = await User.findById(req.user.id);
-    
+
     if (!user) return res.status(404).json({ error: 'User not found' });
 
     const isMatch = await user.comparePassword(currentPassword);
