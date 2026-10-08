@@ -356,7 +356,7 @@ export const AppProvider = ({ children }) => {
     setCurrentUser(prev => ({
       ...prev,
       followingCount: isFollowing ? prev.followingCount - 1 : prev.followingCount + 1,
-      followingUsers: isFollowing 
+      followingUsers: isFollowing
         ? prev.followingUsers.filter(id => id !== userId)
         : [...prev.followingUsers, userId]
     }));
@@ -450,7 +450,7 @@ export const AppProvider = ({ children }) => {
           "Awesome! Excited to see this develop further. ✨"
         ];
         const randomReply = replies[Math.floor(Math.random() * replies.length)];
-        
+
         const replyMsg = {
           id: `m${Date.now() + 1}`,
           senderId: participantId,
@@ -475,7 +475,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const markConversationAsRead = (participantId) => {
-    setConversations(prev => prev.map(c => 
+    setConversations(prev => prev.map(c =>
       c.participantId === participantId ? { ...c, unreadCount: 0 } : c
     ));
   };
