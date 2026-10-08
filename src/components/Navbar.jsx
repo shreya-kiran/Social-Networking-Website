@@ -86,7 +86,7 @@ export default function Navbar() {
           <Sparkles size={14} />
           <span>DEMO MODE</span>
         </div>
-      }
+      )}
     </nav>
   );
 }
