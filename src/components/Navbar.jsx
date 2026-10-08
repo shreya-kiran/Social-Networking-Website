@@ -1,8 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Search, MessageSquare, Bell, Settings, LogIn, UserPlus } from 'lucide-react';
+import { Home, Search, MessageSquare, Bell, Settings, LogIn, UserPlus, Sparkles } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
+import { DEMO_MODE } from '../config/demoMode';
 
 export default function Navbar() {
   const { currentUser, unreadNotificationsCount, unreadMessagesCount } = useAppContext();
@@ -78,6 +79,14 @@ export default function Navbar() {
           </div>
         )}
       </div>
+
+      {/* Demo mode badge */}
+      {DEMO_MODE && (
+        <div className="demo-mode-badge">
+          <Sparkles size={14} />
+          <span>DEMO MODE</span>
+        </div>
+      }
     </nav>
   );
 }
